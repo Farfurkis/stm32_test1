@@ -94,16 +94,19 @@ int main(void)
   MX_LCD_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
-  setup_engine();
+  DEVICES devices = setup_engine(&htim4, TIM_CHANNEL_1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  // ReSharper disable once CppDFAEndlessLoop
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    set_speed(&devices.engine, 50);
+    run_timed(&devices.engine, 5000);
   }
   /* USER CODE END 3 */
 }
@@ -215,7 +218,7 @@ static void MX_TIM4_Init(void)
 
   /* USER CODE END TIM4_Init 1 */
   htim4.Instance = TIM4;
-  htim4.Init.Prescaler = 0;
+  htim4.Init.Prescaler = 32-1;
   htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim4.Init.Period = 65535;
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
