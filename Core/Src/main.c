@@ -94,7 +94,8 @@ int main(void)
   MX_LCD_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
-  DEVICES* devices = setup_engine(&htim4, TIM_CHANNEL_1);
+  DEVICES* devices = setup_engine1(&htim4, TIM_CHANNEL_1);
+  DEVICES* devices = setup_engine2(&htim4, TIM_CHANNEL_2);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -105,8 +106,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    set_speed(&devices->engine, 50);
-    run_timed(&devices->engine, 5000);
+    set_speed(&devices->engine1, 50);
+    run_timed(&devices->engine1, 5000);
   }
   /* USER CODE END 3 */
 }
