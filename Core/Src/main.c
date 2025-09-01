@@ -45,7 +45,7 @@ LCD_HandleTypeDef hlcd;
 TIM_HandleTypeDef htim4;
 
 /* USER CODE BEGIN PV */
-
+DEVICES* devices;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -94,8 +94,10 @@ int main(void)
   MX_LCD_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
-  DEVICES* devices = setup_engine1(&htim4, TIM_CHANNEL_1);
-  DEVICES* devices = setup_engine2(&htim4, TIM_CHANNEL_2);
+  devices = setup_engine1(&htim4, TIM_CHANNEL_1);
+  (void) setup_engine2(&htim4, TIM_CHANNEL_2);
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -106,10 +108,25 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    set_speed(&devices->engine1, 50);
-    run_timed(&devices->engine1, 5000);
+    engine_set_speed(&devices->engine1, 50);
+    // TODO: replace periods with seconds
+    engine_run_timed(&devices->engine1, 5000);
   }
   /* USER CODE END 3 */
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
+{
+    if (devices->engine1.timer == htim) {
+      if (--devices->engine1.periodsToRun == 0) {
+        engine_stop(&devices->engine1);
+      }
+    }
+    if (devices->engine2.timer == htim) {
+      if (--devices->engine2.periodsToRun == 0) {
+        engine_stop(&devices->engine2);
+      }
+    }
 }
 
 /**
