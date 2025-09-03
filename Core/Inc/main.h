@@ -57,6 +57,10 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define Emergency_Stop_Button_Pin GPIO_PIN_4
+#define Emergency_Stop_Button_GPIO_Port GPIOA
+#define Start_Engine_Button_Pin GPIO_PIN_5
+#define Start_Engine_Button_GPIO_Port GPIOA
 #define M1_Pin GPIO_PIN_6
 #define M1_GPIO_Port GPIOB
 #define M2_Pin GPIO_PIN_7

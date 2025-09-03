@@ -94,7 +94,9 @@ int main(void)
   MX_LCD_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
-  devices = setup_engine1(&htim4, TIM_CHANNEL_1);
+  devices = setup_emergency_stop_button();
+  setup_start_button();
+  setup_engine1(&htim4, TIM_CHANNEL_1);
   (void) setup_engine2(&htim4, TIM_CHANNEL_2);
 
 
@@ -113,20 +115,6 @@ int main(void)
     engine_run_timed(&devices->engine1, 5000);
   }
   /* USER CODE END 3 */
-}
-
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
-{
-    if (devices->engine1.timer == htim) {
-      if (--devices->engine1.periodsToRun == 0) {
-        engine_stop(&devices->engine1);
-      }
-    }
-    if (devices->engine2.timer == htim) {
-      if (--devices->engine2.periodsToRun == 0) {
-        engine_stop(&devices->engine2);
-      }
-    }
 }
 
 /**
@@ -276,6 +264,7 @@ static void MX_TIM4_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
   /* USER CODE BEGIN MX_GPIO_Init_1 */
 
   /* USER CODE END MX_GPIO_Init_1 */
@@ -283,6 +272,12 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  /*Configure GPIO pins : Emergency_Stop_Button_Pin Start_Engine_Button_Pin */
+  GPIO_InitStruct.Pin = Emergency_Stop_Button_Pin|Start_Engine_Button_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 

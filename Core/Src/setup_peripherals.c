@@ -22,3 +22,11 @@ DEVICES* setup_display() {
 	// Not implemented yet
 	return &devices;
 }
+
+DEVICES* setup_start_button() {
+	return &devices;
+}
+
+DEVICES* setup_emergency_stop_button() {
+	return &devices;
+}
