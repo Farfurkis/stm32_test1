@@ -275,9 +275,16 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pins : Emergency_Stop_Button_Pin Start_Engine_Button_Pin */
   GPIO_InitStruct.Pin = Emergency_Stop_Button_Pin|Start_Engine_Button_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI4_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI4_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
@@ -285,7 +292,15 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_GPIO_EXTI_IRQHandler(uint16_t GPIO_Pin) {
+  if (GPIO_Pin == Emergency_Stop_Button_Pin) {
+    engine_emergency_stop(&devices->engine1);
+    engine_emergency_stop(&devices->engine2);
+  } else if (GPIO_Pin == Start_Engine_Button_Pin) {
+    engine_set_speed(&devices->engine1, (MAX_DRIVE_SPEED - MIN_DRIVE_SPEED) / 2);
+    engine_run_timed(&devices->engine1, 5000);
+  }
+}
 /* USER CODE END 4 */
 
 /**

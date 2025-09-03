@@ -59,8 +59,10 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define Emergency_Stop_Button_Pin GPIO_PIN_4
 #define Emergency_Stop_Button_GPIO_Port GPIOA
+#define Emergency_Stop_Button_EXTI_IRQn EXTI4_IRQn
 #define Start_Engine_Button_Pin GPIO_PIN_5
 #define Start_Engine_Button_GPIO_Port GPIOA
+#define Start_Engine_Button_EXTI_IRQn EXTI9_5_IRQn
 #define M1_Pin GPIO_PIN_6
 #define M1_GPIO_Port GPIOB
 #define M2_Pin GPIO_PIN_7
