@@ -1,7 +1,7 @@
 #include "setup_peripherals.h"
 #include "engine-control.h"
 
-DEVICES devices;
+static DEVICES devices;
 
 DEVICES* setup_engine1(TIM_HandleTypeDef *controlling_timer, const uint8_t controlling_channel) {
 	devices.engine1 = engine_configure(controlling_timer, controlling_channel);
