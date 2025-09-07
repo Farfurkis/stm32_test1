@@ -99,7 +99,9 @@ int main(void)
   setup_engine1(&htim4, TIM_CHANNEL_1);
   (void) setup_engine2(&htim4, TIM_CHANNEL_2);
 
-
+    engine_set_speed(&devices->engine1, 50);
+    // TODO: replace periods with seconds, hint: do calculation based on chip speed
+    engine_run_timed(&devices->engine1, 5000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -110,9 +112,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    engine_set_speed(&devices->engine1, 50);
-    // TODO: replace periods with seconds
-    engine_run_timed(&devices->engine1, 5000);
+
   }
   /* USER CODE END 3 */
 }
