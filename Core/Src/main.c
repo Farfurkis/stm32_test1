@@ -292,13 +292,27 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_GPIO_EXTI_IRQHandler(uint16_t GPIO_Pin) {
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
   if (GPIO_Pin == Emergency_Stop_Button_Pin) {
     engine_emergency_stop(&devices->engine1);
     engine_emergency_stop(&devices->engine2);
   } else if (GPIO_Pin == Start_Engine_Button_Pin) {
     engine_set_speed(&devices->engine1, (MAX_DRIVE_SPEED - MIN_DRIVE_SPEED) / 2);
     engine_run_timed(&devices->engine1, 5000);
+  }
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
+{
+  if (devices->engine1.timer == htim) {
+    if (--devices->engine1.periodsToRun == 0) {
+      engine_stop(&devices->engine1);
+    }
+  }
+  if (devices->engine2.timer == htim) {
+    if (--devices->engine2.periodsToRun == 0) {
+      engine_stop(&devices->engine2);
+    }
   }
 }
 /* USER CODE END 4 */
