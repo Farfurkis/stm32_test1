@@ -99,9 +99,12 @@ int main(void)
   setup_engine1(&htim4, TIM_CHANNEL_1);
   (void) setup_engine2(&htim4, TIM_CHANNEL_2);
 
-    engine_set_speed(&devices->engine1, 50);
-    // TODO: replace periods with seconds, hint: do calculation based on chip speed
-    engine_run_timed(&devices->engine1, 5000);
+  engine_set_speed(&devices->engine1, 50);
+  // TODO: replace periods with seconds, hint: do calculation based on chip speed
+  engine_run_timed(&devices->engine1, 5000);
+  // TODO: Write Hello on first line and World on second one
+  HAL_LCD_Write(&hlcd, LCD_RAM_REGISTER0, 0xFFFFFFFF, 0x000025); // H
+  HAL_LCD_UpdateDisplayRequest(&hlcd);
   /* USER CODE END 2 */
 
   /* Infinite loop */
